@@ -1,0 +1,5 @@
+curl -X GET \
+-H 'Accept: */*' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Connection: keep-alive' \
+-H 'User-Agent: python-requests/2.32.3' https://stellarburgers.nomoreparties.site/api/ingredients

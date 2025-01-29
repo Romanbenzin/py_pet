@@ -1,0 +1,7 @@
+curl -X POST \
+-H 'Accept: */*' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'User-Agent: python-requests/2.32.3' \
+-d '{"name": "qwe2", "email": "qew@", "password": "qew@qwe.ry"}' https://stellarburgers.nomoreparties.site/api/auth/register
