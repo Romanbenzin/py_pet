@@ -1,0 +1,73 @@
+name: CI Pipeline with Allure
+
+on:
+  push:
+    branches:
+      - main  # Запускать пайплайн при пуше в main
+  pull_request:
+    branches:
+      - main  # Запускать пайплайн при создании PR в main
+  workflow_dispatch:
+
+jobs:
+  stellar-test:
+    runs-on: ubuntu-latest  # Используем последнюю версию Ubuntu
+
+    steps:
+      # Шаг 1: Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Шаг 2: Устанавливаем Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Укажи нужную версию Python
+
+      # Шаг 3: Устанавливаем зависимости
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Установи зависимости из файла
+
+      # Шаг 4: Устанавливаем Allure CLI
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget unzip
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.zip
+          sudo unzip allure-2.24.0.zip -d /opt/
+          sudo ln -s /opt/allure-2.24.0/bin/allure /usr/bin/allure
+          allure --version
+
+      # Шаг 5: Запускаем тесты и генерируем сырые данные Allure
+      - name: Run tests with Allure
+        run: |
+          pytest --alluredir=test_results
+
+      # Шаг 6: Генерируем Allure-отчет
+      - name: Generate Allure report
+        run: |
+          allure generate test_results --output allure-report --clean
+      - name: Display report link
+        run: |
+          echo "### Allure Report" >> $GITHUB_STEP_SUMMARY
+          echo "Отчет доступен по ссылке: [Allure Report](https://Romanbenzin.github.io/py_rep/)" >> $GITHUB_STEP_SUMMARY
+
+      # Шаг 7: Добавляем .nojekyll файл
+      - name: Add .nojekyll file
+        run: |
+          touch allure-report/.nojekyll
+
+      # Шаг 8: Проверяем содержимое рабочей директории (debug)
+      - name: List files (debug)
+        run: |
+          ls -R
+
+      # Шаг 9: Публикуем отчет на GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}  # Используй PAT, если репозиторий приватный
+          publish_dir: allure-report
+          publish_branch: gh-pages  # Используем правильный параметр

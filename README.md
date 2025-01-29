@@ -1,2 +1,4 @@
-# py_pet
-Python проект по автотестам для резюме
+
+pytest --alluredir=test_results
+
+allure serve test_results/
