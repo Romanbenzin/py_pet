@@ -4,4 +4,4 @@ curl -X POST \
 -H 'Connection: keep-alive' \
 -H 'Content-Type: application/json' \
 -H 'User-Agent: python-requests/2.32.3' \
--d '{"name": "qwes", "email": "qew743@qwe.ryd", "password": "qew@qwe.ryf"}' https://stellarburgers.nomoreparties.site/api/auth/register
+-d '{"name": "qwes", "email": "qew670@qwe.ryd", "password": "qew@qwe.ryf"}' https://stellarburgers.nomoreparties.site/api/auth/register
